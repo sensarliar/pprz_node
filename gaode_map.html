@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0,user-scalable=yes">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--<styletype="text/css">
+html{height:100%}
+body{height:100%;margin:0px;padding:0px}
+#container{height:100%}
+</styletype >-->
+<title>马栋栋的地图</title>
+<link rel="stylesheet" type="text/css" href="http://developer.amap.com/Public/css/demo.Default.css" />
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=ab628f01669e6b8e0110cf9aa47fbdee"></script>
+<script language="javascript">
+var mapObj,Marker1,Marker2,Marker3,polyline;
+//var mapObj;
+//,satellite;
+//初始化地图对象，加载地图
+function mapInit() {
+mapObj = new AMap.Map("iCenter",{
+dragEnable:true,
+zoomEnable:true,
+//二维地图显示视口
+view: new AMap.View2D({
+// center:new AMap.LngLat(121.498586,31.239637),//地图中心点
+// center:new AMap.LngLat(108.87830052,34.22493083),//our company gps
+center:new AMap.LngLat(108.882879,34.223304),//gaode map addr ;corrected lnglat
+zoom:18, //地图显示的缩放级别15
+rotation:0
+}),
+// layers:[new Amap.TileLayer.Satellite()]
+// layers:[new AMap.TileLayer.Satellite()],
+// layers: [new AMap.TileLayer({
+// tileUrl:"http://mt{1,2,3,0}.google.cn/vt/lyrs=m@142&hl=zh-CN&gl=cn&x=[x]&y=[y]&z=[z]&s=Galil" //取图地址
+// })],
+rotateEnable:true
+});
+// var trafficLayer = new AMap.TileLayer.Traffic({zIndex:10});
+// trafficLayer.setMap(mapObj);
+//
+// var roadNetLayer = new AMap.TileLayer.RoadNet({zIndex:10}); //实例化路网图层
+// roadNetLayer.setMap(mapObj);
+// var buildingLayer = new AMap.Buildings(); //实例化3D地图图层
+// buildingLayer.setMap(mapObj); //在map中添加3D图层
+// mapObj.setZoom(18);
+//地图类型切换
+// mapObj.plugin(["AMap.MapType"], function() {
+// var type = new AMap.MapType({defaultType:1});//初始状态使用2D地图
+// mapObj.addControl(type);
+// });
+//AMap.event.addlistener(mapObj,'click',getLnglat);
+mapObj.plugin(["AMap.Scale"],function(){
+scale = new AMap.Scale();
+mapObj.addControl(scale);
+});
+mapObj.plugin(["AMap.ToolBar"],function(){
+toolBar = new AMap.ToolBar();
+mapObj.addControl(toolBar);
+});
+AMap.event.addListener(mapObj,'click',getLnglat);
+// addOverlays();
+// addMarker();
+AMap.event.addListener(mapObj,"complete",completeEventHandler);
+}
+//地图图块加载完毕后执行函数
+function completeEventHandler(){
+marker = new AMap.Marker({
+map:mapObj,
+//draggable:true, //是否可拖动
+position:new AMap.LngLat(108.882879,34.223304),//基点位置
+icon:"http://code.mapabc.com/images/car_03.png", //marker图标，直接传递地址url
+offset:new AMap.Pixel(-26,-13), //相对于基点的位置
+autoRotation:true
+});
+var lngX = 108.882879;
+var latY = 34.223304;
+lineArr = new Array();
+lineArr.push(new AMap.LngLat(lngX,latY));
+for (var i = 1; i <3; i++){
+lngX=lngX+Math.random()*0.005;
+if(i%2){
+latY = latY+Math.random()*0.00001;
+}else{
+latY = latY+Math.random()*0.006;
+}
+lineArr.push(new AMap.LngLat(lngX,latY));
+}
+//绘制轨迹
+var polyline = new AMap.Polyline({
+map:mapObj,
+path:lineArr,
+strokeColor:"#00A",//线颜色
+strokeOpacity:1,//线透明度
+strokeWeight:3,//线宽
+strokeStyle:"solid"//线样式
+});
+mapObj.setFitView();
+}
+function startAnimation() {
+marker.moveAlong(lineArr,80);
+}
+function stopAnimation() {
+marker.stopMove();
+}
+function addMarker(){
+//自定义点标记内容
+var markerContent = document.createElement("div");
+markerContent.className = "markerContentStyle";
+//点标记中的图标
+var markerImg= document.createElement("img");
+markerImg.className="markerlnglat";
+markerImg.src="http://webapi.amap.com/images/0.png";
+markerContent.appendChild(markerImg);
+//点标记中的文本
+var markerSpan = document.createElement("span");
+markerSpan.innerHTML = "我是自定义样式的点标记哦！";
+markerContent.appendChild(markerSpan);
+marker = new AMap.Marker({
+map:mapObj,
+position:new AMap.LngLat(108.882821,34.223405), //基点位置
+offset:new AMap.Pixel(-18,-36), //相对于基点的偏移位置
+draggable:true, //是否可拖动
+content:markerContent //自定义点标记覆盖物内容
+});
+marker.setMap(mapObj); //在地图上添加点
+}
+//添加点标记覆盖物，点的位置在地图上分布不均
+function addOverlays(){
+mapObj.clearMap();
+//地图上添加三个点标记，作为参照
+Marker1=new AMap.Marker({
+map:mapObj,
+// icon:"http://webapi.amap.com/images/0.png",
+icon:"marker_sprite.png",
+// icon:"heben1.png",
+// position:new AMap.LngLat(108.882879,34.223304),
+position:new AMap.LngLat(108.882879,34.223304),
+offset:new AMap.Pixel(-12,-36)
+});
+Marker2=new AMap.Marker({
+map:mapObj,
+// icon:"http://webapi.amap.com/images/marker_sprite.png",
+icon:"http://webapi.amap.com/images/0.png",
+position:new AMap.LngLat(108.882879,34.223304),
+offset:new AMap.Pixel(-12,-36),
+draggable:true, //点标记可拖拽
+cursor:'move' //鼠标悬停点标记时的鼠标样式
+});
+// Marker2.setMap(mapObj);
+// Marker2.setAnimation('AMAP_ANIMATION_BOUNCE'); //设置点标记的动画效果，此处为弹跳效果
+Marker3=new AMap.Marker({
+map:mapObj,
+icon:"http://webapi.amap.com/images/3.png",
+position:new AMap.LngLat(108.878225,34.225018),
+offset:new AMap.Pixel(-12,-36)
+});
+document.getElementById('centerCoord').innerHTML = "当前中心点坐标："+mapObj.getCenter().getLng()
++","+mapObj.getCenter().getLat();
+document.getElementById('tips').innerHTML = "成功添加三个点标记，其中有两个在当前地图视野外！";
+}
+//鼠标在地图上点击，获取经纬度坐标
+function getLnglat(e){
+document.getElementById("lngX").value=e.lnglat.getLng();
+document.getElementById("latY").value=e.lnglat.getLat();
+}
+//经纬度坐标转换为容器像素坐标
+function fromLngLatToContainerPixel(){
+var px = document.getElementById("lngX").value;
+var py = document.getElementById("latY").value;
+var pixel=mapObj.lnglatTocontainer(new AMap.LngLat(px,py));
+document.getElementById("pixelx").value=pixel.getX();
+document.getElementById("pixely").value=pixel.getY();
+}
+function en_map(){
+mapObj.setLang("en");
+}
+function zh_en_map(){
+mapObj.setLang("zh_en");
+}
+function zh_map(){
+mapObj.setLang("zh_cn");
+}
+//地图自适应显示函数
+function setMapFitView(){
+var newCenter = mapObj.setFitView();//使地图自适应显示到合适的范围
+document.getElementById('centerCoord').innerHTML = "当前中心点坐标："+newCenter.getCenter();
+document.getElementById('tips').innerHTML = "通过setFitView，地图自适应显示到合适的范围内,点标记已全部显示在视野中！";
+}
+//获取地图当前地面分辨率
+function getMapResolution(){
+var mapResolution = mapObj.getResolution();
+document.getElementById("ResolutionInfo").innerHTML = mapResolution+" 米/像素, <b>地面分辨率</b> 是一个像素(pixel)代表的地面尺寸(米)";
+}
+//获取地图比例尺级别
+function getMapZoom(){
+var mapZoom = mapObj.getZoom();
+document.getElementById("zoomInfo").innerHTML = "当前地图缩放级别："+mapZoom;
+}
+</script>
+</head>
+<body onLoad="mapInit()">
+<div id="iCenter"></div>
+<div style="padding:2px 0px 0px 5px;font-size:12px">
+<input type="button" value="显示英文底图" onClick="javascript:en_map()"/>
+<input type="button" value="显示中英文对照底图" onClick="javascript:zh_en_map()"/>
+<input type="button" value="显示中文底图" onClick="javascript:zh_map()"/>
+</div>
+<!--<div style="padding:200px 100px 0px 500px;font-size:12px">
+<div>使用自定义底图接口，加载了google地图的底图。这个功能用来做LOL的地图，是不是很酷？</div>
+</div>-->
+<div style="padding:2px 0px 0px 5px;font-size:12px">
+<br>地图经纬度坐标：(<b>鼠标左键在地图上单击获取经纬度坐标</b>)
+<br>X：<input type="text" id="lngX" name="lngX"/>&nbsp;Y：<input type="text" id="latY" name="latY"/>
+<br>地图容器像素坐标：
+<br>X：<input type="text" id="pixelx" name="pixelx"/>&nbsp;Y：<input type="text" id="pixely" name="pixely"/>
+<input type="button" value="经纬度坐标转换成容器像素坐标" onClick="javascript:fromLngLatToContainerPixel()"/>
+<input type="button" value="容器像素坐标转换成经纬度坐标" onClick="javascript:fromContainerPixelToLngLat()"/>
+</div>
+<div style="padding:2px 0px 0px 5px;font-size:12px">
+<input type="button" value="地图自适应显示" onClick="javascript:setMapFitView()"/>
+<div id='centerCoord'></div>
+<div id='tips'></div>
+</div>
+<div style="padding:2px 0px 0px 5px;font-size:12px">
+<input type="button" value="获取地图地面分辨率" onClick="javascript:getMapResolution()"/>
+<div id="ResolutionInfo" style="height:30px;margin-top:5px;"></div>
+</div>
+<div style="padding:2px 0px 0px 5px;font-size:12px;height:40px">
+<input type="button" value="获取地图缩放级别" onClick="javascript:getMapZoom()"/>
+<div id="zoomInfo"></div>
+</div>
+<div style="padding:2px 0px 0px 5px;font-size:12px">
+<input type="button" value="开始动画" onclick="startAnimation()"/>
+<input type="button" value="停止动画" onclick="stopAnimation()"/>
+</div>
+</body>
+</html>
+

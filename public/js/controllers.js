@@ -19,6 +19,8 @@ angular.module('pprzmon.controllers', [])
         var lat = parseFloat( elems[ 4 ] );
         var lon = parseFloat( elems[ 5 ] );
 
+	console.log( " about ac_id " + ac_id + ". lat: " + lat + ". lon: " + lon );
+
         $log.log( lat );
         $log.log( lon );
 
@@ -76,8 +78,10 @@ angular.module('pprzmon.controllers', [])
     $scope.uavMarker = {
         id: 0,
         coords: {
-            latitude: 40.1451,
-            longitude: -99.6680
+//            latitude: 40.1451,
+//            longitude: -99.6680
+	    latitude: -8.062719,
+   	    longitude: -34.8711568
         },
         icon: 'icons/airplane.png',
         options: { draggable: false },
