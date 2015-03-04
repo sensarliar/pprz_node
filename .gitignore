@@ -4,4 +4,4 @@
 *.patch
 *.so
 *~
-/.pc
+node_modules
