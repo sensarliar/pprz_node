@@ -15,11 +15,17 @@ angular.module('pprzmon.controllers', [])
 
 	// listener, whenever the server emits a message, this updates the messages list
 	socket.on('FLIGHT_PARAM', function(data) {
-        var elems = data.split(" ");
-        var lat = parseFloat( elems[ 4 ] );
-        var lon = parseFloat( elems[ 5 ] );
+       // var elems = data.split(" ");
+       // var lat = parseFloat( elems[ 4 ] );
+       // var lon = parseFloat( elems[ 5 ] );
 
-	console.log( " about ac_id " + ac_id + ". lat: " + lat + ". lon: " + lon );
+	var myObject = JSON.parse(data);
+	var lat = myObject.lat;
+	var lon = myObject.long;
+	//var msgname = myObject.long;
+
+	console.log( " about ac_id . lat: " + lat + ". lon: " + lon );
+	//socket.emit('xxx', prompt("Filter on which aircraft?"+lat));
 
         $log.log( lat );
         $log.log( lon );
@@ -49,8 +55,10 @@ angular.module('pprzmon.controllers', [])
 
     $scope.map = {
         center: {
-            latitude: -8.062719,
-            longitude: -34.8711568
+ //           latitude: -8.062719,
+ //           longitude: -34.8711568
+            latitude: 43.4629226,
+            longitude: 1.2731203
         },
         zoom: 18,
         draggable: true,
@@ -80,8 +88,8 @@ angular.module('pprzmon.controllers', [])
         coords: {
 //            latitude: 40.1451,
 //            longitude: -99.6680
-	    latitude: -8.062719,
-   	    longitude: -34.8711568
+            latitude: 43.4629226,
+            longitude: 1.2731203
         },
         icon: 'icons/airplane.png',
         options: { draggable: false },

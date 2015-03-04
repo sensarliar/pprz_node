@@ -6,7 +6,7 @@ var redis = require('redis');
 var fs = require('fs');
 
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index2.html');
+  res.sendfile(__dirname + '/index.html');
 });
 app.use(express.static(__dirname + '/public'));
 
@@ -48,17 +48,27 @@ ground_subscriber.on("error", function (err) {
     console.log("error event - " + ground_subscriber.host + ":" + ground_subscriber.port + " - " + err);
 });
 ground_subscriber.on("pmessage", function( subscription, channel, data ) {
-//    var ac_id = data.split(" ")[0];
-    var ac_id = channel.split(".")[2]
-    var msgname = channel.split(".")[1];
+   // var ac_id = data.split(" ")[0];
 
-    //console.log( "sending " + msgname + " about ac_id " + ac_id + ". data: " + data );
-   // console.log( "sending " + msgname + " about ac_id " + ac_id + ". channel: " + channel );
+	//var myObject = JSON.parse(data);
+	//var ac_id = myObject.ac_id;
+	//var msgname = myObject.long;
+	
+	
+//    var ac_id = channel.split(".")[2];
+    var ac_id = 24;
+    var msgname = channel.split(".")[1];
+  //  var msgname = data.split(" ")[1];
+
+
+   // console.log( "sending  about ac_id " + ac_id + ". channel: " + channel + ". data: " + data );
+  //  console.log( "sending " + msgname + " about ac_id " + ac_id + ". channel: " + channel + ". data: " + data );
 
     io.sockets.in( ac_id ).emit( msgname, data );
+//	io.sockets.emit( msgname, data );
 });
-//ground_subscriber.psubscribe( "ground.*" );
-ground_subscriber.psubscribe( "telemetry.*" );
+ground_subscriber.psubscribe( "ground.*" );
+//ground_subscriber.psubscribe( "telemetry.*" );
 
 server.listen( 3000 );
 
