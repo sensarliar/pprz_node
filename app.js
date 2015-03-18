@@ -50,13 +50,13 @@ ground_subscriber.on("error", function (err) {
 ground_subscriber.on("pmessage", function( subscription, channel, data ) {
    // var ac_id = data.split(" ")[0];
 
-	//var myObject = JSON.parse(data);
-	//var ac_id = myObject.ac_id;
+	var myObject = JSON.parse(data);
+	var ac_id = myObject.ac_id;
 	//var msgname = myObject.long;
 	
 	
 //    var ac_id = channel.split(".")[2];
-    var ac_id = 24;
+   // var ac_id = 24;
     var msgname = channel.split(".")[1];
   //  var msgname = data.split(" ")[1];
 

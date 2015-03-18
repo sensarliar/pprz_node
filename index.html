@@ -40,6 +40,11 @@
     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" events="map.events" latitude="map.lat", longitude="map.lng" pan="map.panning">
          <ui-gmap-marker coords="uavMarker.coords" options="uavMarker.options" events="uavMarker.events" idKey="uavMarker.id" icon="uavMarker.icon">
         </ui-gmap-marker>
+<!-- 	<ui-gmap-polyline ng-repeat="p in map.polylines" path="p.path" stroke="p.stroke" visible='p.visible'
+	geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'>
+	</ui-gmap-polyline>-->
+	<ui-gmap-polylines models="polylines" path="'path'" stroke="'stroke'" visible="'visible'" geodesic="'geodesic'" fit="false" editable="'editable'" draggable="'draggable'" icons="'icons'">
+	</ui-gmap-polylines>
     </ui-gmap-google-map>
 </body>
 </html>
