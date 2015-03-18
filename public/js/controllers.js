@@ -87,11 +87,18 @@ angular.module('pprzmon.controllers', [])
         $scope.uavMarker.coords.latitude = lat;
         $scope.uavMarker.coords.longitude = lon;
 
-	var mak_tt={
-	    latitude: lat,
-	    longitude: lon
+	i_x++;
+	while (i_x>10) {
+		var mak_tt={
+		    latitude: lat,
+		    longitude: lon
+		}
+		if ( $scope.polylines[0].path.length>5){
+			$scope.polylines[0].path.shift();
+		}
+		$scope.polylines[0].path.push(mak_tt);
+		i_x=0;
 	}
-	$scope.polylines[0].path.push(mak_tt);
 	//var path = $scope.polylines.path;
 //new google.maps.LatLng(52.511467, 13.447179)
 
@@ -141,8 +148,11 @@ angular.module('pprzmon.controllers', [])
         center: {
  //           latitude: -8.062719,
  //           longitude: -34.8711568
-            latitude: 43.4629226,
-            longitude: 1.2731203
+           // latitude: 43.4629226,
+         //   longitude: 1.2731203
+
+		latitude: 34.2252449667,
+		longitude: 108.878158767
         },
         zoom: 18,
         draggable: true,
@@ -172,8 +182,8 @@ angular.module('pprzmon.controllers', [])
         coords: {
 //            latitude: 40.1451,
 //            longitude: -99.6680
-            latitude: 43.4629226,
-            longitude: 1.2731203
+		latitude: 34.2252449667,
+		longitude: 108.878158767
         },
         icon: 'icons/airplane.png',
         options: { draggable: false },
@@ -184,14 +194,16 @@ angular.module('pprzmon.controllers', [])
     $scope.polylines = [{
         id: 1,
         path: [{
-            latitude: 43.4626226,
-            longitude: 1.2732203
+           // latitude: 43.4626226,
+           // longitude: 1.2732203
+		latitude: 34.2252449667,
+		longitude: 108.878158767
         }, {
-            latitude: 43.4629226,
-            longitude: 1.2730203
+		latitude: 34.2252449667,
+		longitude: 108.878258767
         }],
         stroke: {
-            color: '#606000',
+            color: '#6060FF',
             weight: 3
         },
         editable: true,
