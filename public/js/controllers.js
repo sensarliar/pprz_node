@@ -116,15 +116,20 @@ angular.module('pprzmon.controllers', [])
         $scope.uavMarker.coords.longitude = lon;
 
 	i_x++;
-	while (i_x>10) {
+	while (i_x>27) {
 		var mak_tt={
 		    latitude: lat,
 		    longitude: lon
 		}
-		if ( $scope.polylines[0].path.length>5){
+		if ( $scope.polylines[0].path.length>30){
 			$scope.polylines[0].path.shift();
 		}
 		$scope.polylines[0].path.push(mak_tt);
+	var start_p = new google.maps.LatLng($scope.polylines[0].path[$scope.polylines[0].path.length-2].latitude, $scope.polylines[0].path[$scope.polylines[0].path.length-2].longitude);
+	var end_p = new google.maps.LatLng($scope.polylines[0].path[$scope.polylines[0].path.length-1].latitude, $scope.polylines[0].path[$scope.polylines[0].path.length-1].longitude);
+	var heading = google.maps.geometry.spherical.computeHeading(start_p,end_p);
+	symbolThree.rotation = heading+45;
+	$log.log( "@@@@@@@@@@heading:" + heading);
 		i_x=0;
 	}
 	//var path = $scope.polylines.path;
@@ -284,6 +289,9 @@ rotation: angleDegrees           }
         id: 1,
         path: [{
 		latitude: 34.2252449667,
+		longitude: 108.878158767},
+		{
+		latitude: 34.2252349667,
 		longitude: 108.878158767}],
         stroke: {
             color: '#6060FF',
